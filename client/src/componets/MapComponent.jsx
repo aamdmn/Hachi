@@ -26,6 +26,8 @@ function MapComponent() {
   if (loadError) return 'Error loading maps';
   if (!isLoaded) return 'Loading maps';
 
+  // const onMapLoad = require('../pages/MapPage.jsx');
+
   return (
     <div>
       <GoogleMap
@@ -33,6 +35,7 @@ function MapComponent() {
         zoom={13}
         center={center}
         className="float-right"
+        // onLoad={onMapLoad}
       ></GoogleMap>
     </div>
   );

@@ -3,7 +3,7 @@ module.exports = {
   theme: {
     extend: {
       spacing: {
-        '30persent': '30%',
+        '30persent': '28%',
       },
     },
   },
