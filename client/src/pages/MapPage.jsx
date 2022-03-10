@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef, useCallback } from 'react';
 
+// Searchbar
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
@@ -13,27 +14,57 @@ import {
 } from '@reach/combobox';
 import '@reach/combobox/styles.css';
 
+// Google maps
+import {
+  GoogleMap,
+  useLoadScript,
+  Marker,
+  InfoWindow,
+} from '@react-google-maps/api';
+
 // componets
-import MapComponent from '../componets/MapComponent';
+
+const libraries = ['places'];
+const mapContainerStyle = {
+  width: '70%',
+  height: '500px',
+};
+const center = {
+  lat: 48.148598,
+  lng: 17.107748,
+};
 
 function MapPage() {
-  const mapRef = React.useRef();
-  const onMapLoad = React.useCallback((map) => {
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
+    libraries,
+  });
+
+  const mapRef = useRef();
+  const onMapLoad = useCallback((map) => {
     mapRef.current = map;
   }, []);
 
-  const panTo = React.useCallback(({ lat, lng }) => {
+  const panTo = useCallback(({ lat, lng }) => {
     mapRef.current.panTo({ lat, lng });
     mapRef.current.setZoom(14);
   }, []);
 
-  module.exports = onMapLoad;
+  if (loadError) return 'Error loading maps';
+  if (!isLoaded) return 'Loading maps';
+
   return (
     <div className="h-screen w-screen">
-      <div className="ml-6 mt-8 text-xl w-30persent float-left">
+      <div className="text-xl w-30persent float-left ml-6 mt-8 p-3 border-2 border-black">
         <Search panTo={panTo} />
       </div>
-      <MapComponent></MapComponent>
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        zoom={13}
+        center={center}
+        className="float-right"
+        onLoad={onMapLoad}
+      ></GoogleMap>
       <p className="text-3xl">Random Text</p>
     </div>
   );
@@ -45,7 +76,7 @@ function Search({ panTo }) {
     value,
     suggestions: { status, data },
     setValue,
-    clearSuggestion,
+    clearSuggestions,
   } = usePlacesAutocomplete({
     requestOptions: {
       location: { lat: () => -33.8688, lng: () => 151.2195 },
@@ -56,6 +87,9 @@ function Search({ panTo }) {
   return (
     <Combobox
       onSelect={async (address) => {
+        setValue(address, false);
+        clearSuggestions();
+
         try {
           const results = await getGeocode({ address });
           const { lat, lng } = await getLatLng(results[0]);
@@ -63,8 +97,6 @@ function Search({ panTo }) {
         } catch (error) {
           console.log(error);
         }
-
-        // console.log(address);
       }}
     >
       <ComboboxInput

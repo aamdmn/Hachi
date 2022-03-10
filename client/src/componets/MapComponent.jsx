@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useCallback } from 'react';
 
 import {
   GoogleMap,
@@ -23,6 +23,11 @@ function MapComponent() {
     libraries,
   });
 
+  const mapRef = useRef();
+  const onMapLoad = useCallback((map) => {
+    mapRef.current = map;
+  }, []);
+
   if (loadError) return 'Error loading maps';
   if (!isLoaded) return 'Loading maps';
 
@@ -35,7 +40,7 @@ function MapComponent() {
         zoom={13}
         center={center}
         className="float-right"
-        // onLoad={onMapLoad}
+        onLoad={onMapLoad}
       ></GoogleMap>
     </div>
   );
