@@ -1,5 +1,8 @@
 import React, { useRef, useCallback } from 'react';
 
+// react router
+import { Link } from 'react-router-dom';
+
 // Searchbar
 import usePlacesAutocomplete, {
   getGeocode,
@@ -65,7 +68,22 @@ function MapPage() {
         className="float-right"
         onLoad={onMapLoad}
       ></GoogleMap>
-      <p className="text-3xl">Random Text</p>
+
+      <div className="bg-yellow-500 w-1/4 text-center ml-8 mt-16">
+        <Link to="/lostpet">
+          <button className="p-3 text-2xl font-bold">
+            Stratil sa mi môj maznáčik
+          </button>
+        </Link>
+      </div>
+
+      <div className="bg-blue-500 w-1/4 text-center ml-8 mt-5">
+        <Link to="/findpet">
+          <button className="p-3 text-2xl font-bold">
+            Našieľ som maznáčika
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }
