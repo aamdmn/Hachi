@@ -123,7 +123,7 @@ function Search({ panTo }) {
           setValue(e.target.value);
         }}
         disabled={!ready}
-        placeholder="Search for a place"
+        placeholder="Hľadajte miesto"
       />
       <ComboboxPopover>
         <ComboboxList>

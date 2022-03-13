@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React from 'react';
 
 import {
   GoogleMap,
@@ -9,8 +9,8 @@ import {
 
 const libraries = ['places'];
 const mapContainerStyle = {
-  width: '70%',
-  height: '500px',
+  width: '100%',
+  height: '450px',
 };
 const center = {
   lat: 48.148598,
@@ -23,15 +23,8 @@ function MapComponent() {
     libraries,
   });
 
-  const mapRef = useRef();
-  const onMapLoad = useCallback((map) => {
-    mapRef.current = map;
-  }, []);
-
   if (loadError) return 'Error loading maps';
   if (!isLoaded) return 'Loading maps';
-
-  // const onMapLoad = require('../pages/MapPage.jsx');
 
   return (
     <div>
@@ -40,7 +33,6 @@ function MapComponent() {
         zoom={13}
         center={center}
         className="float-right"
-        onLoad={onMapLoad}
       ></GoogleMap>
     </div>
   );
