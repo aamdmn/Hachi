@@ -7,7 +7,6 @@ import {
   Circle,
 } from '@react-google-maps/api';
 
-const libraries = ['places'];
 const mapContainerStyle = {
   width: '100%',
   height: '450px',
@@ -33,13 +32,9 @@ const optionsMarker = {
 };
 
 function Lostpet() {
-  useEffect(() => {
-    // fetchItems();
-  }, []);
-
   const [markers, setMarkers] = useState([]);
 
-  const onMapClick = (e) => {
+  const onMapClick = (e, props) => {
     setMarkers((current) => [
       ...current,
       {
@@ -54,11 +49,46 @@ function Lostpet() {
     }
   };
 
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const data = {
+      ownerName: e.target.ownerName.value,
+      email: e.target.email.value,
+      tel: e.target.tel.value,
+      petName: e.target.petName.value,
+      details: e.target.details.value,
+      lostDate: e.target.lostDate.value,
+      lat: markers[0].lat,
+      lng: markers[0].lng,
+    };
+    fetch('/handleSubmit', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => {
+        res.json();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // useEffect(() => {
+  //   fetchItems();
+  // }, []);
+
+  // const [items, setItems] = useState([]);
+
   // const fetchItems = async () => {
   //   const data = await fetch('/pets');
   //   const items = await data.json();
   //   setItems(items);
   // };
+
+  const [libraries] = useState(['places']);
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -72,7 +102,7 @@ function Lostpet() {
     <div>
       <h1 className="text-3xl m-20">Lostpet</h1>
       <section>
-        <form method="POST" action="/handleSubmit">
+        <form onSubmit={submitHandler}>
           <div className="flex flex-col ml-36">
             <h1 className="text-3xl font-bold">Osobné údaje</h1>
             <div className="mt-6">
@@ -129,6 +159,34 @@ function Lostpet() {
           </div>
 
           <div className="m-20">
+            <h1 className="text-4xl font-bold mb-5">
+              Kde bol naposledy videný/á?
+            </h1>
+            <GoogleMap
+              mapContainerStyle={mapContainerStyle}
+              zoom={13}
+              center={center}
+              onClick={onMapClick}
+            >
+              <div id="mapMarkers">
+                {markers.map((marker) => (
+                  <Marker
+                    position={{ lat: marker.lat, lng: marker.lng }}
+                    name="marker"
+                  />
+                ))}
+                {markers.map((marker) => (
+                  <Circle
+                    center={{ lat: marker.lat, lng: marker.lng }}
+                    options={optionsMarker.circle}
+                    name="marker"
+                  />
+                ))}
+              </div>
+            </GoogleMap>
+          </div>
+
+          <div className="m-20">
             <input
               type="submit"
               value="Vytvoriť profil"
@@ -162,30 +220,6 @@ function Lostpet() {
       <section className="m-20">
         <h1 className="text-4xl font-bold mb-5">Fotky maznáčika</h1>
         <input type="file" id="petPhotos" name="petPhotos" />
-      </section>
-
-      <section className="m-20">
-        <h1 className="text-4xl font-bold mb-5">Kde bol naposledy videný/á?</h1>
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          zoom={13}
-          center={center}
-          onClick={onMapClick}
-        >
-          {/* <Circle center={marker.petrzalka.center} options={marker.circle} />
-          <Marker position={marker.petrzalka.center} options={marker.marker} />
-          <Marker position={marker.dubravka.center} options={marker.marker} />
-          <Circle center={marker.dubravka.center} options={marker.circle} /> */}
-          {markers.map((marker) => (
-            <Marker position={{ lat: marker.lat, lng: marker.lng }} />
-          ))}
-          {markers.map((marker) => (
-            <Circle
-              center={{ lat: marker.lat, lng: marker.lng }}
-              options={optionsMarker.circle}
-            />
-          ))}
-        </GoogleMap>
       </section>
     </div>
   );

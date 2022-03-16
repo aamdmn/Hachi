@@ -28,6 +28,7 @@ router.get('/pets', async (req, res) => {
   const ownerPets = await pets
     .find({})
     .populate('owner')
+    .populate('map')
     .exec((error, petData) => {
       if (error) {
         res.end('Error getting pets');
@@ -61,14 +62,28 @@ router.post('/handleSubmit', async (req, res) => {
         console.log(err);
       } else {
         console.log('New owner created');
-        res.redirect('/lostpet');
         res.end('New owner created');
       }
     });
   } catch (err) {
     console.log(err);
-    res.redirect('/');
+    res.redirect('/lostpet');
     res.end('Error creating owner');
+  }
+
+  // handle map coordinates
+  const map = {
+    lat: req.body.lat,
+    lng: req.body.lng,
+  };
+  const newMap = new Schemas.maps(map);
+
+  try {
+    await newMap.save();
+  } catch (err) {
+    console.log(err);
+    redirect('/lostpet');
+    res.end();
   }
 
   // handle Pet data
@@ -81,11 +96,14 @@ router.post('/handleSubmit', async (req, res) => {
   // const ownerId = await pet_owner.findOne({ name: 'John Smith' }).exec();
   // const ownerId = await owners.exec();
 
+  let map_cor = newMap;
+
   const newPet = new Schemas.pets({
     name: pet.name,
     details: pet.details,
     lost_date: pet.lost_date,
     owner: pet_owner._id,
+    map: map_cor,
   });
 
   try {
@@ -93,7 +111,6 @@ router.post('/handleSubmit', async (req, res) => {
       if (err) console.log(err);
       else {
         console.log('New pet created');
-        res.redirect('/lostpet');
         res.end('New pet created');
       }
     });
