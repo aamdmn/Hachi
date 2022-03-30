@@ -6,6 +6,7 @@ import MapPage from './pages/MapPage';
 import Home from './pages/Home';
 import Lostpet from './pages/user/Lostpet';
 import Findpet from './pages/user/Findpet';
+import PetProfile from './pages/pet/PetProfile';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/map" element={<MapPage />} />
         <Route path="/lostpet" element={<Lostpet />} />
         <Route path="/findpet" element={<Findpet />} />
+        <Route exact path="/petpage/:id" element={<PetProfile />} />
       </Routes>
     </div>
   );

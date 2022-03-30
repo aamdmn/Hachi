@@ -10,6 +10,9 @@ require('dotenv').config();
 // mongoose
 const mongoose = require('mongoose');
 
+// cors
+const cors = require('cors');
+
 const routesHandler = require('./routes/handler.js');
 
 const port = process.env.PORT || 7000;
@@ -17,6 +20,7 @@ const port = process.env.PORT || 7000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ extended: false }));
 app.use('/', routesHandler);
+app.use(cors);
 
 const mongoDB = process.env.MONGO_URI;
 
