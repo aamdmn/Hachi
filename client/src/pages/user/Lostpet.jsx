@@ -20,6 +20,7 @@ import Alert from 'react-bootstrap/Alert';
 import AddImage from '../../componets/AddImage';
 import Footer from '../../componets/Footer';
 import FormInput from '../../componets/FormInput';
+import FormTextarea from '../../componets/FormTextarea';
 
 const mapContainerStyle = {
   width: '100%',
@@ -64,42 +65,59 @@ function Lostpet() {
       name: 'ownerName',
       type: 'text',
       placeholder: 'John Doe',
+      errorMessage: 'Prosím vyplňte vaše meno a priezvisko',
       label: 'Meno a priezvisko',
+      pattern: '^[a-zA-ZáéíóúýÁÉÍÓÚÝ ]{3,20}$',
+      required: true,
     },
     {
       id: 2,
       name: 'email',
-      type: 'text',
+      type: 'email',
       placeholder: 'john@example.com',
+      errorMessage: 'Váš email nie je platný.',
       label: 'Email',
+      required: true,
     },
     {
       id: 3,
       name: 'tel',
       type: 'text',
-      placeholder: '09...',
+      placeholder: '0901234567',
+      errorMessage: 'Vaše telefónne číslo nie je platné.',
       label: 'Tel. číslo',
+      pattern: '^[0-9]{10}$',
+      required: true,
     },
     {
       id: 4,
       name: 'petName',
       type: 'text',
       placeholder: 'Majlo',
+      errorMessage: '',
       label: 'Meno zvieratka',
+      required: true,
     },
+    {
+      id: 5,
+      name: 'lostDate',
+      type: 'datetime-local',
+      placeholder: '',
+      errorMessage: '',
+      label: 'Kedy sa stratil?',
+      required: true,
+    },
+  ];
+
+  const textarea = [
     {
       id: 5,
       name: 'details',
       type: 'text',
       placeholder: '',
+      errorMessage: 'Prosím, vložte detaily zvieratka.',
       label: 'Popis zvieratka',
-    },
-    {
-      id: 6,
-      name: 'lostDate',
-      type: 'text',
-      placeholder: '',
-      label: 'Kedy sa stratil?',
+      required: true,
     },
   ];
 
@@ -173,13 +191,12 @@ function Lostpet() {
   if (loadError) return 'Error loading maps';
   if (!isLoaded) return <Spinner animation="border" variant="dark" />;
 
-  console.log(values.ownerName);
   return (
     <div className="dark overflow-hidden font-sora">
       <Navbar />
       <section>
         <form onSubmit={submitHandler}>
-          <div className="flex flex-col ml-36 mt-10">
+          <div className="flex flex-col ml-32 mt-10">
             <h1 className="text-3xl font-bold">Osobné údaje</h1>
             {inputs.map((input) => (
               <FormInput
@@ -189,10 +206,18 @@ function Lostpet() {
                 onChange={onChange}
               />
             ))}
+            {textarea.map((input) => (
+              <FormTextarea
+                key={input.id}
+                {...input}
+                value={values[input.name]}
+                onChange={onChange}
+              />
+            ))}
           </div>
 
-          <div className="m-20">
-            <h1 className="text-4xl font-bold mb-5">
+          <div className="m-20 ml-32">
+            <h1 className="text-3xl font-bold mb-5">
               Kde bol naposledy videný/á?
             </h1>
             <GoogleMap
@@ -219,8 +244,8 @@ function Lostpet() {
             </GoogleMap>
           </div>
 
-          <section className="m-20">
-            <h1 className="text-4xl font-bold mb-10">Fotky maznáčika</h1>
+          <section className="ml-32 mb-32">
+            <h1 className="text-3xl font-bold mb-20">Fotka maznáčika</h1>
             <div>
               {error && <Alert variant="danger">{error}</Alert>}
               <input
@@ -228,7 +253,7 @@ function Lostpet() {
                 className="mt-2 block w-full text-sm font-sora text-slate-500
                 file:mr-4 file:py-2 file:px-4 file:font-sora
                 file:rounded-full file:border-0
-                file:text-lg file:font-semibold
+                file:text-md file:font-semibold
                 file:duration-300
                 file:bg-violet-50 file:text-Black-700
                 hover:file:bg-violet-200"
@@ -237,11 +262,12 @@ function Lostpet() {
                 onChange={(e) => setImage(e.target.files[0])}
                 id="validationFormik107"
                 feedbackTooltip
+                required
               />
             </div>
           </section>
 
-          <div className=" mx-20 mb-36">
+          <div className="ml-32 mb-40">
             <input
               type="submit"
               value="Vytvoriť profil"

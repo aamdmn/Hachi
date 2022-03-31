@@ -9,6 +9,8 @@ import { Icon } from '@iconify/react';
 
 import useFetch from '../hooks/useFetch';
 
+import { format } from 'date-fns';
+
 // Searchbar
 import usePlacesAutocomplete, {
   getGeocode,
@@ -61,6 +63,7 @@ const optionsMarker = {
 
 function MapPage() {
   const { data, loading, error } = useFetch('/pets');
+  const [selected, setSelected] = useState(null);
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -92,6 +95,8 @@ function MapPage() {
   if (error) {
     return <div>{error}</div>;
   }
+  // const date = format(data.lost_date, 'dd.MM.yyyy');
+  // console.log(selected.lost_date);
 
   return (
     <div className="h-screen w-screen dark font-sora overflow-x-hidden">
@@ -114,6 +119,10 @@ function MapPage() {
                 <Marker
                   position={{ lat: marker.map.lat, lng: marker.map.lng }}
                   name="marker"
+                  key={marker._id}
+                  onClick={() => {
+                    setSelected(marker);
+                  }}
                 />
               ))}
             {data &&
@@ -122,18 +131,55 @@ function MapPage() {
                   center={{ lat: marker.map.lat, lng: marker.map.lng }}
                   options={optionsMarker.circle}
                   name="marker"
+                  key={marker._id}
+                  onClick={() => {
+                    setSelected(marker);
+                  }}
                 />
-              ))}
+              ))}{' '}
+            {data && selected ? (
+              <InfoWindow
+                position={{ lat: selected.map.lat, lng: selected.map.lng }}
+                onCloseClick={() => {
+                  setSelected(null);
+                }}
+              >
+                <div>
+                  <h1 className="text-xl font-normal">{selected.name}</h1>
+                  <p>
+                    Naposledy videný:{' '}
+                    {format(new Date(selected.lost_date), 'yyyy/MM/dd-HH:mm')}
+                  </p>
+                  <div className="flex justify-center mt-3">
+                    <Link to={`/petpage/${selected._id}`}>
+                      <Icon
+                        icon="akar-icons:info"
+                        color="#081e3f"
+                        height="30"
+                      />{' '}
+                    </Link>
+                  </div>
+                </div>
+              </InfoWindow>
+            ) : null}
           </div>
         </GoogleMap>
       </section>
 
-      <div className="flex ">
-        <div className="w-96 h-min text-center ml-6 mt-32">
+      <div className="flex">
+        <div className="w-min text-start bg-yellow-500 ml-6 mt-32">
           <Link to="/lostpet">
-            <button className="p-3 text-2xl font-bold h-16 bg-yellow-500">
-              Stratil sa mi môj maznáčik
-            </button>
+            <div className="flex">
+              <div className="p-3 mt-1 pr-0 pb-0">
+                <Icon icon="ep:help" color="#081e3f" height="22" />
+              </div>
+              <p className="p-3 pl-1 pb-0 w-96 text-xl font-bold">
+                Stratil sa mi môj maznáčik
+              </p>
+            </div>
+            <span className="text-sm font-light opacity-70 p-3 pt-2 ml-6 text-black block">
+              Vytvorte profil pre vašeho strateného maznáčika
+            </span>
           </Link>
         </div>
         <div className="w-max flex justify-end">
