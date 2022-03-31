@@ -1,6 +1,10 @@
 {
   "name": "hachi",
   "version": "1.0.0",
+  "engines": {
+    "node": "14.17.4",
+    "yarn": "1.22.15"
+  },
   "description": "",
   "main": "index.js",
   "scripts": {
