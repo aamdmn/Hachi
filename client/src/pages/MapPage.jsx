@@ -49,8 +49,8 @@ const center = {
 const optionsMarker = {
   circle: {
     radius: 500,
-    fillColor: '#FF0000',
-    strokeColor: '#ff0000',
+    fillColor: '#63C7FF',
+    strokeColor: '#63C7FF',
     strokeOpacity: 0.35,
     strokeWeight: 0.5,
     fillOpacity: 0.35,
@@ -167,7 +167,7 @@ function MapPage() {
       </section>
 
       <div className="flex">
-        <div className="w-min text-start bg-yellow-500 ml-6 mt-32">
+        <div className="h-20 text-start bg-yellow-500 ml-6 mt-32 shadow-xl hover:bg-gray-400 hover:text-white duration-300">
           <Link to="/lostpet">
             <div className="flex">
               <div className="p-3 mt-1 pr-0 pb-0">
@@ -177,7 +177,7 @@ function MapPage() {
                 Stratil sa mi môj maznáčik
               </p>
             </div>
-            <span className="text-sm font-light opacity-70 p-3 pt-2 ml-6 text-black block">
+            <span className="text-sm font-light opacity-70 p-3 pt-0 ml-6 text-black block">
               Vytvorte profil pre vašeho strateného maznáčika
             </span>
           </Link>
@@ -234,7 +234,11 @@ function Search({ panTo }) {
         <ComboboxList>
           {status === 'OK' &&
             data.map(({ id, description }) => (
-              <ComboboxOption key={id} value={description} />
+              <ComboboxOption
+                key={id}
+                value={description}
+                className="p-3 text-xl w-96 drop-shadow-xl rounded-lg"
+              />
             ))}
         </ComboboxList>
       </ComboboxPopover>
@@ -262,7 +266,7 @@ function PetCardComponent() {
     <div className="ml-32 mt-20 mb-20 w-fit grid grid-cols-3 gap-x-20 gap-y-16">
       {data &&
         data.map((pet) => (
-          <div className="w-60 relative max-h-min rounded overflow-hidden shadow-lg bg-dark-blue text-white">
+          <div className="w-60 relative max-h-min rounded overflow-hidden shadow-xl bg-dark-blue text-white">
             <div className="mb-16">
               <div className="flex flex-col items-center">
                 <img
@@ -284,7 +288,7 @@ function PetCardComponent() {
                 )}
               </div>
             </div>
-            <div className="flex w-20 h-11 justify-center items-center bg-yellow-400 absolute bottom-6  right-1/2 left-1/3">
+            <div className="flex w-20 h-11 justify-center items-center bg-yellow-400 absolute bottom-6 shadow-2xl right-1/2 left-1/3 hover:bg-gray-400 hover:text-white duration-300">
               <Link to={`/petpage/${pet._id}`}>
                 <Icon icon="akar-icons:info" color="#081e3f" height="35" />{' '}
               </Link>
