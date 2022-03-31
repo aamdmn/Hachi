@@ -2,6 +2,8 @@
 const express = require('express');
 const app = express();
 
+const path = require('path');
+
 const bodyParser = require('body-parser');
 
 // dotenv
@@ -21,6 +23,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ extended: false }));
 app.use('/', routesHandler);
 app.use(cors);
+
+app.use(express.static(path.resolve(__dirname, './client/build')));
+
+app.get('*', function (request, response) {
+  response.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
+});
 
 const mongoDB = process.env.MONGO_URI;
 

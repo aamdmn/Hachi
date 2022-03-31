@@ -4,10 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server",
-    "server": "nodemon -r dotenv/config backend/server.js",
+    "server": "cd backend && nodemon server.js",
+    "build": "cd client && yarn build",
+    "heroku-postbuild": "yarn install-client && yarn build",
+    "install-client": "cd client && npm install",
     "client": "yarn --cwd ./client run start",
-    "dev": "concurrently \"yarn run server\" \"yarn run client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client --prefix client\"",
+    "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client --prefix client\""
   },
   "repository": {
     "type": "git",

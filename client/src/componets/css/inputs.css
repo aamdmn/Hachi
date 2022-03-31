@@ -1,0 +1,19 @@
+span {
+    display: none;
+}
+
+
+input:invalid[focused="true"] ~ span {
+    display: block;
+}
+
+textarea:invalid[focused="true"] ~ span {
+    display: block;
+}
+input:invalid[focused="true"]{
+    border-color: #f44336;
+}
+
+textarea:invalid[focused="true"]{
+    border-color: #f44336;
+}
