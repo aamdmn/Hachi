@@ -9,7 +9,7 @@
   "main": "index.js",
   "scripts": {
     "server": "cd backend && nodemon server.js",
-    "build": "cd client && yarn build",
+    "build": "cd client && yarn add && yarn build",
     "heroku-postbuild": "yarn install-client && yarn build",
     "install-client": "cd client && npm install",
     "client": "yarn --cwd ./client run start",
