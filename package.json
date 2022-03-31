@@ -14,7 +14,7 @@
     "install-client": "cd client && yarn install",
     "client": "yarn --cwd ./client run start",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client --prefix client\"",
-    "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client --prefix client\""
+    "start": "yarn install && concurrently --kill-others-on-fail \"yarn server\" \"yarn client --prefix client\""
   },
   "repository": {
     "type": "git",
