@@ -11,7 +11,7 @@
     "server": "cd backend && nodemon server.js",
     "build": "cd client && yarn build",
     "heroku-postbuild": "yarn install-client && yarn build",
-    "install-client": "cd client && yarn add",
+    "install-client": "cd client && yarn install",
     "client": "yarn --cwd ./client run start",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client --prefix client\"",
     "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client --prefix client\""
