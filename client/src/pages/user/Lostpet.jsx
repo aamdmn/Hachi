@@ -19,6 +19,7 @@ import Card from 'react-bootstrap/Card';
 import Alert from 'react-bootstrap/Alert';
 import AddImage from '../../componets/AddImage';
 import Footer from '../../componets/Footer';
+import FormInput from '../../componets/FormInput';
 
 const mapContainerStyle = {
   width: '100%',
@@ -48,6 +49,63 @@ function Lostpet() {
   const [markers, setMarkers] = useState([]);
   const [error, setError] = useState(null);
   const [image, setImage] = useState();
+  const [values, setValues] = useState({
+    ownerName: '',
+    email: '',
+    tel: '',
+    petName: '',
+    details: '',
+    lostDate: '',
+  });
+
+  const inputs = [
+    {
+      id: 1,
+      name: 'ownerName',
+      type: 'text',
+      placeholder: 'John Doe',
+      label: 'Meno a priezvisko',
+    },
+    {
+      id: 2,
+      name: 'email',
+      type: 'text',
+      placeholder: 'john@example.com',
+      label: 'Email',
+    },
+    {
+      id: 3,
+      name: 'tel',
+      type: 'text',
+      placeholder: '09...',
+      label: 'Tel. číslo',
+    },
+    {
+      id: 4,
+      name: 'petName',
+      type: 'text',
+      placeholder: 'Majlo',
+      label: 'Meno zvieratka',
+    },
+    {
+      id: 5,
+      name: 'details',
+      type: 'text',
+      placeholder: '',
+      label: 'Popis zvieratka',
+    },
+    {
+      id: 6,
+      name: 'lostDate',
+      type: 'text',
+      placeholder: '',
+      label: 'Kedy sa stratil?',
+    },
+  ];
+
+  const onChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
 
   const onMapClick = (e, props) => {
     setMarkers((current) => [
@@ -80,12 +138,12 @@ function Lostpet() {
     }
 
     const data = {
-      ownerName: e.target.ownerName.value,
-      email: e.target.email.value,
-      tel: e.target.tel.value,
-      petName: e.target.petName.value,
-      details: e.target.details.value,
-      lostDate: e.target.lostDate.value,
+      ownerName: values.ownerName,
+      email: values.email,
+      tel: values.tel,
+      petName: values.petName,
+      details: values.details,
+      lostDate: values.lostDate,
       lat: markers[0].lat,
       lng: markers[0].lng,
       image: imageUrl,
@@ -105,18 +163,6 @@ function Lostpet() {
       });
   };
 
-  // useEffect(() => {
-  //   fetchItems();
-  // }, []);
-
-  // const [items, setItems] = useState([]);
-
-  // const fetchItems = async () => {
-  //   const data = await fetch('/pets');
-  //   const items = await data.json();
-  //   setItems(items);
-  // };
-
   const [libraries] = useState(['places']);
 
   const { isLoaded, loadError } = useLoadScript({
@@ -127,65 +173,22 @@ function Lostpet() {
   if (loadError) return 'Error loading maps';
   if (!isLoaded) return <Spinner animation="border" variant="dark" />;
 
+  console.log(values.ownerName);
   return (
-    <div className="dark overflow-hidden">
+    <div className="dark overflow-hidden font-sora">
       <Navbar />
-      <h1 className="text-3xl m-20">Lostpet</h1>
       <section>
         <form onSubmit={submitHandler}>
-          <div className="flex flex-col ml-36">
+          <div className="flex flex-col ml-36 mt-10">
             <h1 className="text-3xl font-bold">Osobné údaje</h1>
-            <div className="mt-6">
-              <p>Vaše meno a priezvisko</p>
-              <input
-                type="text"
-                name="ownerName"
-                className="border-2 border-black w-80 p-1"
+            {inputs.map((input) => (
+              <FormInput
+                key={input.id}
+                {...input}
+                value={values[input.name]}
+                onChange={onChange}
               />
-            </div>
-            <div className="mt-6">
-              <p>Tel. číslo</p>
-              <input
-                type="text"
-                name="tel"
-                className="border-2 border-black p-1 w-80"
-              />
-            </div>
-            <div className="mt-6">
-              <p>Email</p>
-              <input
-                type="email"
-                name="email"
-                className="border-2 border-black p-1 w-80 text-lg"
-              />
-            </div>
-            <h1 className="mt-16 text-3xl font-bold">
-              Informácie o Vašom maznáčikovi
-            </h1>
-            <div className="mt-6">
-              <p>Meno</p>
-              <input
-                type="text"
-                name="petName"
-                className="border-2 border-black p-1 w-80"
-              />
-            </div>
-            <div className="mt-6">
-              <p>Popisok</p>
-              <textarea
-                type="text"
-                name="details"
-                className="border-2 border-black p-1 w-80"
-              />
-            </div>
-            <div className="mt-6">
-              <p>Dátum kedy sa stratiľ</p>
-              <input
-                type="datetime-local"
-                className="border-2 border-black p-1 w-80"
-                name="lostDate"
-              />
-            </div>
+            ))}
           </div>
 
           <div className="m-20">
