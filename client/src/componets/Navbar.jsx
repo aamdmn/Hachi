@@ -11,7 +11,7 @@ function Navbar() {
     <div className="flex w-screen overflow-hidden">
       <section className="flex">
         <div
-          className="ml-36 space-y-2 mt-24"
+          className="flex-col ml-36 space-y-2 mt-24 h-32"
           onClick={() => setIsNavOpen((prev) => !prev)}
         >
           <span className="block h-0.5 w-8  bg-white dark:bg-black"></span>

@@ -95,13 +95,11 @@ function MapPage() {
   if (error) {
     return <div>{error}</div>;
   }
-  // const date = format(data.lost_date, 'dd.MM.yyyy');
-  // console.log(selected.lost_date);
 
   return (
     <div className="h-screen w-screen dark font-sora overflow-x-hidden">
       <Navbar />
-      <section className="mt-16">
+      <section className="mt-2">
         <div className="float-left ml-6 mt-16 mr-11">
           <Search panTo={panTo} />
         </div>
@@ -201,7 +199,7 @@ function Search({ panTo }) {
     clearSuggestions,
   } = usePlacesAutocomplete({
     requestOptions: {
-      location: { lat: () => -33.8688, lng: () => 151.2195 },
+      location: { lat: () => 48.148598, lng: () => 17.107748 },
       radius: 100 * 1000,
     },
   });

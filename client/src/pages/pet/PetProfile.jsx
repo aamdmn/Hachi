@@ -27,16 +27,20 @@ function PetProfile() {
   }
 
   return (
-    <div>
+    <div className="">
       <div className="dark">
-        <Navbar />
+        <div className="overflow-hidden">
+          <Navbar />
+        </div>
         {data && (
           <section>
-            <div className="justify-center h-screen m-6">
-              <h1 className="text-4xl font-bold m-6 mt-20 ">{data[0].name}</h1>
+            <div className="justify-center h-screen font-sora">
+              <h1 className="text-4xl font-bold ml-32 mt-20 ">
+                {data[0].name}.
+              </h1>
               <PetPhotos data={data[0]} />
-              <PetDetails data={data[0]} />
               <LastSeen data={data[0]} />
+              <PetDetails data={data[0]} />
               <Contact data={data[0]} />
             </div>
           </section>

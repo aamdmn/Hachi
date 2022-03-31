@@ -11,15 +11,17 @@ function LastSeen(pet) {
   const h = date.getHours();
   const min = date.getMinutes();
 
+  console.log(d);
+
   return (
-    <div>
-      <div className="m-6">
-        <h1 className="text-4xl font-bold">Naposledy videný/á.</h1>
-        <div className="m-6">
-          <div className="m-5">
+    <div className="overflow-hidden">
+      <div className="mt-28 relative">
+        <h1 className="text-4xl ml-32 mb-8 font-bold">Naposledy videný/á.</h1>
+        <div className="">
+          <div className="w-1/2 ml-32">
             <MapComponent />
           </div>
-          <p>
+          <p className="font-bold text-3xl absolute top-1/2 right-48">
             {`${d}.${m} ${y}`} <br /> {`${h}:${min}`}
           </p>
         </div>

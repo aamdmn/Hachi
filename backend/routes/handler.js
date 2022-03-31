@@ -139,12 +139,10 @@ router.post('/handleSubmit', async (req, res) => {
         if (err) console.log(err);
         else {
           console.log('New pet created');
-          res.redirect('/map');
         }
       });
     } catch (err) {
       console.log(err);
-      res.end();
     }
   }
 

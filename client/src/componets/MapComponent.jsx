@@ -13,15 +13,15 @@ import {
 
 const libraries = ['places'];
 const mapContainerStyle = {
-  width: '50%',
+  width: '800px',
   height: '350px',
 };
 
 const optionsMarker = {
   circle: {
     radius: 500,
-    fillColor: '#FF0000',
-    strokeColor: '#ff0000',
+    fillColor: '#63C7FF',
+    strokeColor: '#63C7FF',
     strokeOpacity: 0.35,
     strokeWeight: 0.5,
     fillOpacity: 0.35,
@@ -60,7 +60,7 @@ function MapComponent() {
     <div>
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
-        zoom={13}
+        zoom={15}
         center={{ lat: data[0].map.lat, lng: data[0].map.lng }}
         options={{ mapId: '1c4d7153cf0a085e' }}
         className="float-right"

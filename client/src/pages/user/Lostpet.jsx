@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Google map
 import {
@@ -21,6 +21,8 @@ import AddImage from '../../componets/AddImage';
 import Footer from '../../componets/Footer';
 import FormInput from '../../componets/FormInput';
 import FormTextarea from '../../componets/FormTextarea';
+
+import { useNavigate, Navigate } from 'react-router-dom';
 
 const mapContainerStyle = {
   width: '100%',
@@ -46,7 +48,7 @@ const optionsMarker = {
   },
 };
 
-function Lostpet() {
+function Lostpet({ history }) {
   const [markers, setMarkers] = useState([]);
   const [error, setError] = useState(null);
   const [image, setImage] = useState();
@@ -59,6 +61,8 @@ function Lostpet() {
     lostDate: '',
   });
 
+  const [posted, isPosted] = useState(false);
+
   const inputs = [
     {
       id: 1,
@@ -67,7 +71,7 @@ function Lostpet() {
       placeholder: 'John Doe',
       errorMessage: 'Prosím vyplňte vaše meno a priezvisko',
       label: 'Meno a priezvisko',
-      pattern: '^[a-zA-ZáéíóúýÁÉÍÓÚÝ ]{3,20}$',
+      pattern: '^[a-zA-ZáéíóúýÁÉÍÓÚÝšŠčČťŤžŽ ]{3,20}$',
       required: true,
     },
     {
@@ -139,6 +143,7 @@ function Lostpet() {
       setMarkers(markers.slice(1));
     }
   };
+  const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -167,18 +172,26 @@ function Lostpet() {
       image: imageUrl,
     };
 
-    await axios
+    const postData = await axios
       .post('/handleSubmit', data, {
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      .then((res) => {
-        res.redirect('/map');
-      })
       .catch((err) => {
         err.response.data.msg && setError(err.response.data.msg);
       });
+
+    if (postData) {
+      history.push('/');
+      isPosted(true);
+    }
+
+    if (isPosted) {
+      setTimeout(() => {
+        navigate('/');
+      }, 300);
+    }
   };
 
   const [libraries] = useState(['places']);
