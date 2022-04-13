@@ -8,7 +8,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "cd backend && nodemon server.js",
+    "server": "cd backend && node server.js",
     "build": "cd client && yarn install && yarn build",
     "heroku-postbuild": "yarn install-client && yarn build",
     "install-client": "cd client && yarn install",

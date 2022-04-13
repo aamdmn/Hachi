@@ -30,7 +30,7 @@ app.get('*', function (request, response) {
   response.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
 });
 
-const mongoDB = process.env.MONGO_URI;
+const mongoDB = process.env.MONGO_URL;
 
 mongoose
   .connect(mongoDB, {
